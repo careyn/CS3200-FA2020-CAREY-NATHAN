@@ -234,20 +234,29 @@ public class MusicCritique {
               scanner = new Scanner(System.in);
               String in = scanner.nextLine();
               int ai = artist.findArtistByName(in).getAid();
-              review.findReviews("aid", ai);
+              reviews = review.findReviews("aid", ai);
+              for (Review i : reviews) {
+                System.out.println(i.toString());
+              }
               break;
             case 2:
               System.out.println("Enter the song name");
               scanner = new Scanner(System.in);
               in = scanner.nextLine();
               int si = songdao.findSongByName(in).getSid();
-              review.findReviews("sid", si);
+              reviews = review.findReviews("sid", si);
+              for (Review i : reviews) {
+                System.out.println(i.toString());
+              }
               break;
             case 3:
               System.out.println("Enter the critic id");
               scanner = new Scanner(System.in);
               int in1 = scanner.nextInt();
-              review.findReviews("cid", in1);
+              reviews = review.findReviews("cid", in1);
+              for (Review i : reviews) {
+                System.out.println(i.toString());
+              }
               break;
             default:
               System.out.println("Invalid command");
@@ -271,7 +280,7 @@ public class MusicCritique {
               songdao.updateSong(songdao.findSongByName(song).getSid(),
                   new Song(songdao.findSongByName(song).getSid(),
                       songdao.findSongByName(song).getPid(), runtime, title,
-                      songdao.findSongByName(song).getAid()));
+                      a.getAid()));
             }
             else {
               songdao.deleteSong(songdao.findSongByName(song).getSid());
@@ -291,7 +300,7 @@ public class MusicCritique {
               System.out.println("Enter the new rating and comment");
               int rating = scanner.nextInt();
               String comment = scanner.nextLine();
-              review.updateReview(new Review(si, ci, songdao.findSongByName(song).getAid(), rating,
+              review.updateReview(new Review(si, c.getCid(), songdao.findSongByName(song).getAid(), rating,
                   comment));
             } else {
               review.deleteReview(si, ci);
@@ -324,6 +333,8 @@ public class MusicCritique {
             String in = scanner.nextLine();
             if (in == "delete") {
               user.deleteRecord(u.getUid());
+              System.out.println("user deleted, ending program.");
+              System.exit(0);
               break;
             } else {
               System.out.println("returning to main menu...");
