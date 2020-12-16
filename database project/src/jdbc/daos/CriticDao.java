@@ -105,6 +105,34 @@ public class CriticDao {
     return null;
   }
 
+  static final String FIND_CRITIC_BY_UID =
+      "SELECT * FROM critic WHERE uid=?";
+
+  public Critic findCriticByUid(Integer uid) {
+    connection = getConnection();
+    try {
+      statement = connection.prepareStatement(FIND_CRITIC_BY_UID);
+      statement.setInt(1, uid);
+      ResultSet resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        String a = resultSet.getString("abilities");
+        Integer c = resultSet.getInt("cid");
+        Critic critic = new Critic(c, uid, a);
+        return critic;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        connection.close();
+        statement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
   static final String UPDATE_CRITIC =
       "UPDATE critic SET abilities=? WHERE cid=?";
   public Integer updateCritic(Integer cid, Critic critic) {

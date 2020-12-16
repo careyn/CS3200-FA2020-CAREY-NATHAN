@@ -81,13 +81,15 @@ public class UserDao {
   }
 
   static final String UPDATE_USER =
-      "UPDATE user SET first=? WHERE uid=?";
+      "UPDATE user SET first=?, last=?, email=? WHERE uid=?";
   public Integer updateUser(Integer uid, User user) {
     connection = getConnection();
     try {
       statement = connection.prepareStatement(UPDATE_USER);
       statement.setString(1, user.getFirst());
-      statement.setInt(2, user.getUid());
+      statement.setString(2, user.getLast());
+      statement.setString(3, user.getEmail());
+      statement.setInt(4, user.getUid());
       status = statement.executeUpdate();
     } catch (SQLException e) {
       e.printStackTrace();

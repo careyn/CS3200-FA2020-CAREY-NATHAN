@@ -1,55 +1,38 @@
 import java.util.List;
+import java.util.Random;
 import jdbc.daos.ArtistDao;
+import jdbc.daos.CriticDao;
+import jdbc.daos.GenreDao;
+import jdbc.daos.PlaylistDao;
+import jdbc.daos.ReviewDao;
+import jdbc.daos.SongDao;
+import jdbc.daos.UserDao;
 import jdbc.models.Artist;
+import jdbc.models.Song;
 
 public class main {
 
   public static void main(String[] args) {
-    ArtistDao dao = new ArtistDao();
 
-    Artist artist = new Artist(123, "jimbo", "just a dude", 123);
-    Integer status = dao.createArtist(artist);
-    System.out.println("Added Jimbo");
+    UserDao user = new UserDao();
+    CriticDao critic = new CriticDao();
+    ArtistDao artist = new ArtistDao();
+    SongDao songdao = new SongDao();
+    PlaylistDao pdao = new PlaylistDao();
+    GenreDao gdao = new GenreDao();
 
-    artist = dao.findArtistById(123);
-    System.out.println(artist);
+    Random random = new Random();
+    ReviewDao review = new ReviewDao();
 
-    artist = new Artist(234, "Ted", "not just a dude", 234);
-    status = dao.createArtist(artist);
-    System.out.println("Added Ted");
+    int uid = 567;
+    int aid = 567;
+    int cid = 567;
+    int pid = 567;
+    int sid = 567;
 
-    artist = dao.findArtistById(234);
-    System.out.println(artist);
-
-    System.out.println("print out all of the artists");
-    List<Artist> as = dao.findAllArtists();
-    for(Artist a:as) {
-      System.out.println(a);
-    }
-
-    System.out.println("Updated Jimbo to Kyle");
-    artist = new Artist(123, "kyle", "just a dude", 123);
-    status = dao.updateArtist(123, artist);
-
-    artist = dao.findArtistById(123);
-    System.out.println(artist);
-
-    status = dao.deleteArtist(123);
-    System.out.println("deleted Kyle/Jimbo");
-
-    System.out.println("print out all of the artists");
-    as = dao.findAllArtists();
-    for(Artist a:as) {
-      System.out.println(a);
-    }
-
-    status = dao.deleteArtist(234);
-    System.out.println("deleted Ted");
-
-    System.out.println("print out all of the artists (nothing left)");
-    as = dao.findAllArtists();
-    for(Artist a:as) {
-      System.out.println(a);
+    List<Song> songs = songdao.findSongs("aid", 345);
+    for (Song i: songs) {
+      System.out.println(i.toString());
     }
 
   }

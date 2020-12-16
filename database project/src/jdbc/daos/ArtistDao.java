@@ -109,6 +109,35 @@ public class ArtistDao {
     return null;
   }
 
+  static final String FIND_ARTIST_BY_UID =
+      "SELECT * FROM artist WHERE uid=?";
+
+  public Artist findArtistByUid(Integer uid) {
+    connection = getConnection();
+    try {
+      statement = connection.prepareStatement(FIND_ARTIST_BY_UID);
+      statement.setInt(1, uid);
+      ResultSet resultSet = statement.executeQuery();
+      if (resultSet.next()) {
+        String stage_name = resultSet.getString("stage_name");
+        String bio = resultSet.getString("bio");
+        int aid = resultSet.getInt("aid");
+        Artist artist = new Artist(aid, stage_name, bio, uid);
+        return artist;
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    } finally {
+      try {
+        connection.close();
+        statement.close();
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
+    }
+    return null;
+  }
+
   static final String UPDATE_ARTIST =
       "UPDATE artist SET stage_name=? WHERE aid=?";
 

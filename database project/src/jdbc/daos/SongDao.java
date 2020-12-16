@@ -214,15 +214,12 @@ public class SongDao {
     return null;
   }
 
-  static final String FIND_SONGS
-      = "SELECT * FROM song WHERE ?=?";
-  public List<Song> findSongs(String field, int value) {
+  public List<Song> findSongs(String s, int value) {
     List<Song> songs = new ArrayList<Song>();
     connection = getConnection();
     try {
       statement = connection
-          .prepareStatement(FIND_SONGS);
-      statement.setString(1, field);
+          .prepareStatement(s);
       statement.setInt(1, value);
       ResultSet resultSet = statement.executeQuery();
       while(resultSet.next()) {

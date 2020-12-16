@@ -104,23 +104,21 @@ public class ReviewDao {
     return status;
   }
 
-  static final String FIND_REVIEWS
-      = "SELECT * FROM review WHERE ?=?";
-  public List<Review> findReviews(String field, int value) {
+
+  public List<Review> findReviews(String s, int value) {
     List<Review> reviews = new ArrayList<Review>();
     connection = getConnection();
     try {
       statement = connection
-          .prepareStatement(FIND_REVIEWS);
-      statement.setString(1, field);
+          .prepareStatement(s);
       statement.setInt(1, value);
       ResultSet resultSet = statement.executeQuery();
       while(resultSet.next()) {
         Integer sid = resultSet.getInt("sid");
         Integer cid = resultSet.getInt("cid");
         Integer aid = resultSet.getInt("aid");
-        Integer rating = resultSet.getInt("comment");
-        String comment = resultSet.getString("rating");
+        Integer rating = resultSet.getInt("rating");
+        String comment = resultSet.getString("comment");
 
         Review review = new Review(sid, cid, aid, rating, comment);
         reviews.add(review);
@@ -151,8 +149,8 @@ public class ReviewDao {
         Integer sid = resultSet.getInt("sid");
         Integer cid = resultSet.getInt("cid");
         Integer aid = resultSet.getInt("aid");
-        Integer rating = resultSet.getInt("comment");
-        String comment = resultSet.getString("rating");
+        Integer rating = resultSet.getInt("rating");
+        String comment = resultSet.getString("comment");
 
         Review review = new Review(sid, cid, aid, rating, comment);
         reviews.add(review);

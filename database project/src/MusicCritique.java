@@ -17,7 +17,19 @@ import jdbc.models.Song;
 import jdbc.models.User;
 
 public class MusicCritique {
+  static final String FIND_SONGS_AID
+      = "SELECT * FROM song WHERE aid=?";
+  static final String FIND_SONGS_PID
+      = "SELECT * FROM song WHERE pid=?";
+  static final String byaid
+      = "SELECT * FROM review WHERE aid=?";
+  static final String bysid
+      = "SELECT * FROM review WHERE sid=?";
+  static final String bycid
+      = "SELECT * FROM review WHERE cid=?";
+
   public static void main(String[] args) {
+
 
     UserDao user = new UserDao();
     CriticDao critic = new CriticDao();
@@ -86,6 +98,8 @@ public class MusicCritique {
       }
     }
     System.out.println(u.toString());
+    c = critic.findCriticByUid(u.getUid());
+    a = artist.findArtistByUid(u.getUid());
     if (critic.findCriticById(u.getUid()) == null) {
       cstate = false;
     }
@@ -131,7 +145,9 @@ public class MusicCritique {
               System.out.println("Please enter the song name, runtime, and playlist");
               scanner = new Scanner(System.in);
               String song = scanner.nextLine();
+              scanner = new Scanner(System.in);
               int runtime = scanner.nextInt();
+              scanner = new Scanner(System.in);
               String playlist = scanner.nextLine();
               int add = random.nextInt(100);
               sid += add;
@@ -186,7 +202,7 @@ public class MusicCritique {
               scanner = new Scanner(System.in);
               String in = scanner.nextLine();
               int ai = artist.findArtistByName(in).getAid();
-              songs = songdao.findSongs("aid", ai);
+              songs = songdao.findSongs(FIND_SONGS_AID, ai);
               for (Song i: songs) {
                 System.out.println(i.toString());
               }
@@ -195,14 +211,14 @@ public class MusicCritique {
               System.out.println("Enter the song name");
               scanner = new Scanner(System.in);
               in = scanner.nextLine();
-              songdao.findSongByName(in);
+              System.out.println(songdao.findSongByName(in).toString());
               break;
             case 3:
               System.out.println("Enter the playlist title");
               scanner = new Scanner(System.in);
               in = scanner.nextLine();
               int pi = pdao.findPlaylistByName(in).getPid();
-              songs = songdao.findSongs("pid", pi);
+              songs = songdao.findSongs(FIND_SONGS_PID, pi);
               for (Song i: songs) {
                 System.out.println(i.toString());
               }
@@ -234,7 +250,7 @@ public class MusicCritique {
               scanner = new Scanner(System.in);
               String in = scanner.nextLine();
               int ai = artist.findArtistByName(in).getAid();
-              reviews = review.findReviews("aid", ai);
+              reviews = review.findReviews(byaid, ai);
               for (Review i : reviews) {
                 System.out.println(i.toString());
               }
@@ -244,7 +260,7 @@ public class MusicCritique {
               scanner = new Scanner(System.in);
               in = scanner.nextLine();
               int si = songdao.findSongByName(in).getSid();
-              reviews = review.findReviews("sid", si);
+              reviews = review.findReviews(bysid, si);
               for (Review i : reviews) {
                 System.out.println(i.toString());
               }
@@ -253,7 +269,7 @@ public class MusicCritique {
               System.out.println("Enter the critic id");
               scanner = new Scanner(System.in);
               int in1 = scanner.nextInt();
-              reviews = review.findReviews("cid", in1);
+              reviews = review.findReviews(bycid, in1);
               for (Review i : reviews) {
                 System.out.println(i.toString());
               }
@@ -276,6 +292,7 @@ public class MusicCritique {
               System.out.println("Enter the new runtime and title: ");
               scanner = new Scanner(System.in);
               int runtime = scanner.nextInt();
+              scanner = new Scanner(System.in);
               String title = scanner.nextLine();
               songdao.updateSong(songdao.findSongByName(song).getSid(),
                   new Song(songdao.findSongByName(song).getSid(),
@@ -290,6 +307,7 @@ public class MusicCritique {
                 + "update/delete: ");
             scanner = new Scanner(System.in);
             String song = scanner.nextLine();
+            scanner = new Scanner(System.in);
             int ci = scanner.nextInt();
             int si = songdao.findSongByName(song).getSid();
             System.out.println(review.findReviewById(ci, si).toString());
@@ -298,7 +316,9 @@ public class MusicCritique {
             int option = scanner.nextInt();
             if (option == 1) {
               System.out.println("Enter the new rating and comment");
+              scanner = new Scanner(System.in);
               int rating = scanner.nextInt();
+              scanner = new Scanner(System.in);
               String comment = scanner.nextLine();
               review.updateReview(new Review(si, c.getCid(), songdao.findSongByName(song).getAid(), rating,
                   comment));
@@ -323,15 +343,18 @@ public class MusicCritique {
             System.out.println("Enter the new first name, last name, and email:");
             scanner = new Scanner(System.in);
             String first = scanner.nextLine();
+            scanner = new Scanner(System.in);
             String last = scanner.nextLine();
+            scanner = new Scanner(System.in);
             String email = scanner.nextLine();
-            user.updateUser(u.getUid(), new User(u.getUsername(), u.getPassword(), first, last,
-                email, u.getUid()));
+            u = new User(u.getUsername(), u.getPassword(), first, last,
+                email, u.getUid());
+            user.updateUser(u.getUid(), u);
           } else if(choice == 2) {
             System.out.println("Please enter 'delete' to confirm user deletion: ");
             scanner = new Scanner(System.in);
             String in = scanner.nextLine();
-            if (in == "delete") {
+            if (in.equals("delete")) {
               user.deleteRecord(u.getUid());
               System.out.println("user deleted, ending program.");
               System.exit(0);

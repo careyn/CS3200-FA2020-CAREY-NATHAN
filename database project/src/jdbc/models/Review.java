@@ -25,7 +25,7 @@ public class Review {
   }
 
   public String toString() {
-    return aid + ": " + Integer.toString(rating);
+    return aid + ": " + Integer.toString(rating) + ": " + comment;
   }
 
   public void setSid(int sid) {
